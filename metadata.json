@@ -1,0 +1,6 @@
+{
+  "name": "LabMaster",
+  "description": "Interactive learning platform for understanding college lab programs through complete source code, detailed step-by-step explanations, and live output previews.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
