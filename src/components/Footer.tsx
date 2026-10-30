@@ -25,7 +25,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             Dashboard
           </button>
           <button onClick={() => onNavigate('subject')} className="hover:text-slate-900 transition-colors">
-            Major 12
+            All Subjects
           </button>
           <button onClick={() => onNavigate('progress')} className="hover:text-slate-900 transition-colors">
             My Progress
@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         <div className="text-center md:text-right text-slate-400 font-mono text-[11px]">
-          Source: Practical Lab Manual (9 Verified Programs)
+          Official Practical Syllabus (39 Verified Programs · 4 Majors)
         </div>
       </div>
     </footer>

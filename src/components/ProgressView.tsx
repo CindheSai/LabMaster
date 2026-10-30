@@ -72,7 +72,7 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
             My Lab Preparation Progress
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Track your mastery of B.Sc. Computer Science practical laboratory syllabi across all three major courses.
+            Track your mastery of B.Sc. Computer Science practical laboratory syllabi across all four major courses.
           </p>
         </div>
 

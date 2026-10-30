@@ -39,6 +39,19 @@ export default function App() {
     resetAllProgress,
   } = useLabStorage();
 
+  // Global keyboard shortcut listener for Cmd+K or Ctrl+K
+  React.useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
+
+
   // Combine Major 12, Major 13, Major 14, and Major 15 programs
   const allPrograms = useMemo<ProgramData[]>(() => {
     return [

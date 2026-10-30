@@ -146,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
               currentView === 'subject' ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-50'
             }`}
           >
-            My Subjects (M12, M13, M14)
+            My Subjects (4 Major Courses)
           </button>
           <button
             onClick={() => { onNavigate('progress'); setMobileMenuOpen(false); }}

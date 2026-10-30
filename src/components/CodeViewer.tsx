@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Copy, Check, Maximize2, Minimize2, FileCode, Layers } from 'lucide-react';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-markup-templating';
-import 'prismjs/components/prism-php';
-import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-python';
-import { Download } from 'lucide-react';
+import { Copy, Check, Maximize2, Minimize2, FileCode, Layers, Download } from 'lucide-react';
+import Prism from '../utils/prismSetup';
 import { CodeFile } from '../types';
 
 interface CodeViewerProps {

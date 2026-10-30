@@ -8,7 +8,8 @@ export function useLabStorage() {
   const [completedIds, setCompletedIds] = useState<number[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY_COMPLETED);
-      return stored ? JSON.parse(stored) : [1]; // Start with 1 completed as default demo progress
+      const parsed = stored ? JSON.parse(stored) : null;
+      return Array.isArray(parsed) ? parsed : [1];
     } catch {
       return [1];
     }
@@ -17,7 +18,8 @@ export function useLabStorage() {
   const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY_BOOKMARKS);
-      return stored ? JSON.parse(stored) : [6, 7]; // Math and Regex bookmarked initially for easy exam prep
+      const parsed = stored ? JSON.parse(stored) : null;
+      return Array.isArray(parsed) ? parsed : [6, 7];
     } catch {
       return [6, 7];
     }
@@ -26,7 +28,8 @@ export function useLabStorage() {
   const [recentlyViewedIds, setRecentlyViewedIds] = useState<number[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY_RECENT);
-      return stored ? JSON.parse(stored) : [1, 5, 7];
+      const parsed = stored ? JSON.parse(stored) : null;
+      return Array.isArray(parsed) ? parsed : [1, 5, 7];
     } catch {
       return [1, 5, 7];
     }
