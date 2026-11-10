@@ -1,0 +1,201 @@
+LABMASTER — USER GUIDE
+======================
+
+A short, practical guide to studying with LabMaster. Everything here works with
+the page opened directly from your extracted folder.
+
+
+1. OPEN THE APP
+---------------
+Double-click index.html. The dashboard appears with your progress (a fresh copy
+starts at 0 of 39 practicals).
+
+Layout:
+  Left  — navigation (Dashboard, All Subjects, All Practicals, Bookmarks,
+          Learning Progress, Viva Questions, Lab Resources, Personal Notes,
+          Study Assistant, Settings, About)
+  Top   — breadcrumbs, global search, theme button
+  Right — page content
+
+On a phone the navigation becomes a slide-in drawer: tap the menu button at the
+top left. On a tablet the sidebar is compact.
+
+
+2. FIND A PRACTICAL
+-------------------
+Three ways:
+
+  * All Subjects → choose a subject → pick a practical
+  * All Practicals → search or filter the full list
+  * Ctrl + K (Cmd + K on Mac) → type a title, topic, program number (e.g. 107)
+    or a phrase from the code → arrow keys to choose → Enter to open
+
+Inside a subject you can search that subject, filter by All / Completed /
+Incomplete / Bookmarked, and sort alphabetically. Original syllabus order is the
+default.
+
+
+3. WORK THROUGH A PRACTICAL
+---------------------------
+Each practical page is laid out in the same order:
+
+  A Aim              what the program must do (lab-manual question + plain words)
+  B Requirements     languages, files, imports, what you need installed
+  C Theory           mechanism, concepts and prerequisites
+  D Algorithm        the numbered steps of the program
+  E Source code      syntax-highlighted viewer + browser demo or run-locally steps
+  F Code explanation collapsible, line-referenced breakdown of every step
+  G Expected output  the verified result, with an explanation of how to read it
+  H Result           completion status and what to write in your lab record
+  I Important notes  exam-oriented notes
+  J Viva questions   expandable questions with answers, searchable
+  K Personal notes   your own observations, saved in this browser
+
+The right-hand panel shows "On this page" links plus quick facts and a bookmark
+button. Previous/next buttons at the bottom walk the subject in order.
+
+Code viewer controls:
+  A− / A+       change code font size (saved for next time)
+  Wrap          toggle soft wrapping for long lines
+  Expand        show the whole file instead of a scroll window
+  Copy          copy the exact code to the clipboard
+  Download      save the file as .php / .py / .sql / .html / .js / .css
+  Tabs          corrected version, original lab-manual version, extra files
+
+The code is displayed exactly as stored — indentation and blank lines are
+preserved, nothing is reformatted.
+
+
+4. RUN A PROGRAM
+----------------
+HTML / CSS / JavaScript practicals
+  Press "Run browser demo". The program runs inside a sandboxed frame that is
+  isolated from the app. Reload the demo any time.
+
+PHP / MySQL / Python practicals
+  These cannot run in a double-clicked HTML file — no browser can do that
+  without a server. The practical page gives the exact local steps:
+    PHP:     install XAMPP, start Apache, save the file in htdocs, open
+             http://localhost/...
+    Python:  install Python 3.10+, save the file, run: python file.py
+    MySQL:   start MySQL/phpMyAdmin, create a database, run the SQL
+  Compare your real output with the "Expected output" section.
+
+Nothing in LabMaster claims a program executed when it did not.
+
+
+5. TRACK YOUR PROGRESS
+----------------------
+  * "Mark as completed" on a practical page records that you finished it.
+  * The star button bookmarks a practical.
+  * Dashboard and Learning Progress recalculate automatically: per-subject
+    percentage, overall percentage, remaining practicals, recently viewed.
+  * A new copy always starts with zero completions and zero bookmarks.
+
+Backup and restore (Settings → Your data):
+  Export progress   saves a JSON file with completion, bookmarks, notes and
+                    recent activity.
+  Import progress   restores that file after validating it. Importing replaces
+                    the current data, so export first if unsure.
+  Reset buttons     clear completion, bookmarks or notes separately, or reset
+                    everything. Each asks for confirmation.
+
+Your data stays in this browser. It does not sync between browsers, computers
+or user profiles, and clearing browser data deletes it. That is a browser
+limitation, not something the app can work around offline.
+
+
+6. NOTES AND VIVA
+-----------------
+Notes are per practical: write, save, edit or delete. All notes are listed on
+the Personal Notes page, where you can search them and jump back to the
+practical. Notes are never transmitted anywhere.
+
+Viva Questions page collects every question in the curriculum, grouped by
+subject, with a search box and expandable answers. Each practical page also has
+its own viva section with a filter.
+
+
+7. PDF RESOURCES
+----------------
+Lab Resources lists the four original PDFs with their subject, file name and
+program count.
+
+  Open PDF      opens the document in a new tab (browser PDF viewer)
+  Download      saves the PDF to your computer
+  Preview here  embeds the PDF in the page
+
+Some browsers refuse to display PDFs embedded from a local file. If the preview
+stays blank, use Open PDF or Download — the file itself is present and correct.
+Keep the resources folder next to index.html.
+
+
+8. APPEARANCE
+-------------
+The theme button in the header cycles light → dark → system. Settings offers
+the same three options explicitly, plus code font size. The chosen theme is
+remembered and applied to every page. Motion is reduced automatically if your
+operating system asks for it.
+
+
+9. KEYBOARD
+-----------
+  Ctrl / Cmd + K   open global search
+  ↑ / ↓            move through results
+  Enter            open the highlighted result
+  Esc              close search or the mobile drawer
+  Tab / Shift+Tab  move through controls (focus is always visible)
+
+
+10. THE STUDY ASSISTANT (OPTIONAL)
+----------------------------------
+Study Assistant builds explanations from the data already inside the app: the
+aim, theory, code walkthrough, expected output, exam notes and viva questions
+of any practical. It also searches the whole curriculum.
+
+It is not a live AI service, needs no API key, and makes no network requests.
+Every answer is assembled from the bundled lab content, so it works offline —
+and the rest of the app works perfectly without ever opening it.
+
+
+11. TROUBLESHOOTING
+-------------------
+Nothing happens when I double-click index.html
+  Use Chrome, Edge, Firefox or Safari (recent versions). If your system opens a
+  text editor instead, right-click → Open with → your browser.
+
+The page looks unstyled or the sidebar is missing
+  The file may be truncated or opened from inside the ZIP. Extract the archive
+  first, then open index.html from the extracted folder.
+
+My progress disappeared
+  Browser storage is per browser and per file location. Check you opened the
+  same extracted folder in the same browser, and that you are not in private/
+  incognito mode (which discards storage when closed). Restore from an exported
+  JSON file if you have one.
+
+A PDF will not open
+  Confirm the resources folder sits beside index.html and still contains the
+  four PDF files. Then try the Download button.
+
+The code demo frame is blank
+  Some browsers block embedded documents. The code is still shown above the
+  demo — copy or download it and open it directly in your browser.
+
+Text is too small / too large
+  Use A− / A+ in the code viewer for code, and your browser's zoom
+  (Ctrl + + / Ctrl + −) for the interface.
+
+
+12. QUICK CHECKLIST FOR EXAM PREPARATION
+----------------------------------------
+  [ ] Read the aim and theory for every practical in a subject
+  [ ] Copy the code into your record and run it locally
+  [ ] Compare your output with the expected output
+  [ ] Answer the viva questions without expanding the answers
+  [ ] Write a one-line conclusion in Personal notes
+  [ ] Mark the practical completed and watch the subject percentage rise
+
+Good luck with your lab exam.
+
+LabMaster v1.0 · offline · no installation · no account
