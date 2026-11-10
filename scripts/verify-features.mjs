@@ -77,7 +77,9 @@ await group('search', async () => {
   if (geo) {
     check(Math.abs(geo.left - geo.right) <= 20, `search panel is centred (left ${geo.left}px vs right ${geo.right}px)`);
     check(geo.width < geo.vw, 'search panel is narrower than the viewport');
-    check(geo.overlayW === geo.vw, 'overlay spans the viewport width');
+    // fixed positioning resolves against the layout viewport, which excludes the
+    // classic scrollbar, so allow that gutter instead of demanding an exact match
+    check(geo.overlayW >= geo.vw - 20, `overlay spans the viewport width (${geo.overlayW}px of ${geo.vw}px)`);
   }
 
   await page.fill('#search-input', 'matrix');
@@ -119,15 +121,19 @@ await group('completion', async () => {
 await group('bookmark', async () => {
   const bm = page.locator('[data-action="toggle-bookmark"]').first();
   check(await bm.count() > 0, 'practical page exposes a bookmark control');
-  const before = (await bm.innerText()).trim();
+  const before = await bm.getAttribute('aria-pressed');
   await bm.click();
   await page.waitForTimeout(260);
-  const after = (await page.locator('[data-action="toggle-bookmark"]').first().innerText()).trim();
-  check(before !== after, 'bookmark toggle changes its state');
+  const after = await page.locator('[data-action="toggle-bookmark"]').first().getAttribute('aria-pressed');
+  check(before === 'false' && after === 'true', `bookmark toggles on (aria-pressed ${before} -> ${after})`);
 
   await go('#/bookmarks');
-  const listed = await page.locator('#view').innerText();
-  check(/matrix/i.test(listed), 'bookmarked practical appears on the Bookmarks page');
+  const listed = await page.evaluate(() => ({
+    text: document.getElementById('view').innerText,
+    links: [...document.querySelectorAll('#view a[href^="#/practical/"]')].map((a) => a.getAttribute('href'))
+  }));
+  check(listed.links.includes('#/practical/306') || /Sum and Product/i.test(listed.text),
+    'bookmarked practical appears on the Bookmarks page');
 });
 
 /* ------------------------------------------------------------ personal note */
@@ -160,11 +166,17 @@ await group('theme', async () => {
 await group('prev-next', async () => {
   await go('#/practical/306');
   const href = await page.evaluate(() => {
-    const links = [...document.querySelectorAll('#view a[href^="#/practical/"]')];
-    const hit = links.find((a) => /next/i.test(a.textContent || ''));
-    return hit ? hit.getAttribute('href') : null;
+    const cur = 306;
+    const ids = [...document.querySelectorAll('#view a[href^="#/practical/"]')]
+      .map((a) => {
+        const h = a.getAttribute('href') || '';
+        return { href: h, id: parseInt(h.split('/').pop(), 10) };
+      })
+      .filter((x) => Number.isFinite(x.id) && x.id !== cur);
+    const next = ids.filter((x) => x.id > cur).sort((a, b) => a.id - b.id)[0];
+    return next ? next.href : null;
   });
-  check(!!href, 'practical page offers a next-practical link');
+  check(href === '#/practical/307', 'practical page links to the next practical in syllabus order (' + href + ')');
   if (href) {
     await page.click(`#view a[href="${href}"]`);
     await page.waitForTimeout(320);
