@@ -21,6 +21,14 @@ const notes = [];
 const fail = (msg) => problems.push(msg);
 const ok = (msg) => notes.push(msg);
 
+/** Some authored fields are strings, some are arrays of paragraphs/lines. */
+const asText = (v) => {
+  if (typeof v === 'string') return v;
+  if (Array.isArray(v)) return v.map(asText).join(' ');
+  if (v && typeof v === 'object') return Object.values(v).map(asText).join(' ');
+  return '';
+};
+
 /* ---------------------------------------------------------------- subjects */
 const EXPECTED = {
   'major-12': { ids: [1, 2, 3, 4, 5, 6, 7, 8, 9], name: 'Web Interface Designing' },
@@ -60,9 +68,9 @@ for (const [sid, spec] of Object.entries(EXPECTED)) {
   for (const id of spec.ids) {
     const p = programs.find((x) => x.id === id);
     if (!p) { fail(`practical ${id} missing`); continue; }
-    if (!p.title) fail(`practical ${id} has no title`);
-    if (!p.originalCode || p.originalCode.trim().length < 20) fail(`practical ${id} has no source code`);
-    if (!p.objective || p.objective.trim().length < 10) fail(`practical ${id} has no aim/objective`);
+    if (!asText(p.title).trim()) fail(`practical ${id} has no title`);
+    if (asText(p.originalCode).trim().length < 20) fail(`practical ${id} has no source code`);
+    if (asText(p.objective).trim().length < 10) fail(`practical ${id} has no aim/objective`);
     if (!Array.isArray(p.steps) || p.steps.length === 0) fail(`practical ${id} has no algorithm steps`);
     if (!Array.isArray(p.vivaQuestions) || p.vivaQuestions.length === 0) fail(`practical ${id} has no viva questions`);
     if (!p.subjectId) fail(`practical ${id} has no subject association`);
@@ -84,7 +92,7 @@ for (const s of subjects) {
 
 /* ------------------------------------------------- five known defect fixes */
 const byId = (id) => programs.find((p) => p.id === id);
-const codeOf = (p) => (p && (p.correctedCode || p.originalCode)) || '';
+const codeOf = (p) => (p ? asText(p.correctedCode) || asText(p.originalCode) : '');
 
 // Major 15 Program 6 — matrix multiplication accumulation + dimension check
 {
