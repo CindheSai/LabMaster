@@ -17,7 +17,7 @@ import { PHP_LAB_PROGRAMS } from '../src/data/phpPrograms';
 import { DATA_SCIENCE_LAB_PROGRAMS } from '../src/data/dataSciencePrograms';
 import { PYTHON_APP_DEV_LAB_PROGRAMS } from '../src/data/pythonAppDevPrograms';
 
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.join(ROOT, 'standalone', 'data.json');
 
 type AnyProgram = Record<string, any>;
