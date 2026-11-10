@@ -1125,6 +1125,10 @@ mark { background: color-mix(in srgb, var(--warning) 40%, transparent); color: i
 /* keep the viewer inside its column at every width; long code scrolls inside .code-scroll */
 .code-shell, .code-toolbar { min-width: 0; max-width: 100%; }
 .code-scroll { width: 100%; }
+/* action rows wrap instead of pushing the page wider than the viewport */
+.row { flex-wrap: wrap; min-width: 0; }
+.row > .btn, .row > a.btn { max-width: 100%; }
+.btn { max-width: 100%; }
 .progress.success > span { background: var(--success, #15803d); }
 
 /* demo */
