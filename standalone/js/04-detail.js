@@ -438,8 +438,8 @@
     html += '<div class="section">' + H.sectionCard('Appearance',
       '<div class="sb-label">Theme</div><div class="grid grid-3" style="margin-top:8px">' +
         themeOpts.map(function (t) {
-          return '<button type="button" class="btn" style="justify-content:flex-start;height:auto;padding:12px;' + (state.theme === t[0] ? 'border-color:var(--accent,#2563eb);box-shadow:0 0 0 1px var(--accent,#2563eb) inset' : '') + '" data-action="set-theme" data-theme="' + t[0] + '">' +
-            icon(t[2], 16) + '<span style="text-align:left"><strong style="display:block;font-size:13px">' + t[1] + '</strong><span class="tiny muted">' + esc(t[3]) + '</span></span></button>';
+          return '<button type="button" class="btn theme-opt" style="justify-content:flex-start;height:auto;padding:12px;' + (state.theme === t[0] ? 'border-color:var(--accent,#2563eb);box-shadow:0 0 0 1px var(--accent,#2563eb) inset' : '') + '" data-action="set-theme" data-theme="' + t[0] + '">' +
+            icon(t[2], 16) + '<span class="theme-opt-text" style="text-align:left"><strong style="display:block;font-size:13px">' + t[1] + '</strong><span class="tiny muted">' + esc(t[3]) + '</span></span></button>';
         }).join('') + '</div>' +
       '<div class="divider"></div>' +
       '<div class="spread" style="flex-wrap:wrap;gap:10px">' +

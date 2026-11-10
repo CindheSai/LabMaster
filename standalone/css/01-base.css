@@ -418,3 +418,15 @@ body { scrollbar-gutter: stable; }
   overflow-wrap: normal;
   white-space: nowrap;
 }
+
+/* Theme picker buttons carry a title and a description, so they must wrap
+   instead of inheriting the single-line rule used by ordinary buttons. */
+.btn.theme-opt {
+  white-space: normal;
+  align-items: flex-start;
+  gap: 10px;
+}
+.btn.theme-opt .theme-opt-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
