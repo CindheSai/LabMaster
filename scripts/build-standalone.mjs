@@ -152,6 +152,17 @@ try {
   problems.push('could not create the ZIP archive: ' + e.message);
 }
 
+/* --------------------------------------------------- release (tracked) ----- */
+/* dist/ is excluded by the workspace git exclude file, so the shipped
+   artifacts are mirrored into release/ which is committed to GitHub. */
+const RELEASE = path.join(ROOT, 'release');
+fs.rmSync(RELEASE, { recursive: true, force: true });
+fs.mkdirSync(RELEASE, { recursive: true });
+fs.cpSync(OUT, path.join(RELEASE, 'LabMaster'), { recursive: true });
+if (fs.existsSync(zipPath)) {
+  fs.copyFileSync(zipPath, path.join(RELEASE, 'labmaster-standalone.zip'));
+}
+
 /* ------------------------------------------------------------------ report --- */
 const htmlBytes = fs.statSync(path.join(OUT, 'index.html')).size;
 notes.push(`index.html          ${(htmlBytes / 1024).toFixed(1)} KB (single file, no external requests)`);
@@ -164,3 +175,4 @@ if (fs.existsSync(zipPath)) notes.push(`zip                 ${(fs.statSync(zipPa
 console.log('LabMaster standalone build complete\n');
 notes.forEach((n) => console.log('  ' + n));
 console.log('\n  open: dist/LabMaster/index.html  (double-click, no server)');
+console.log('  ship: release/LabMaster + release/labmaster-standalone.zip  (committed to Git)');

@@ -7,7 +7,7 @@ WORKDIR /app
 RUN apk upgrade --no-cache
 
 COPY serve-standalone.mjs ./
-COPY dist/LabMaster ./public
+COPY release/LabMaster ./public
 
 ENV PORT=3000
 ENV NODE_ENV=production
