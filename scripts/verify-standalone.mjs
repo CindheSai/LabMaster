@@ -70,14 +70,14 @@ check(`all ${data.programs.length} practical pages render aim+code+viva`, practi
 let subjectFailures = [];
 for (const s of data.subjects) {
   await go('#/subject/' + s.id);
-  const rows = await page.locator('.practical-row, .pl-row, [data-practical]').count();
+  const rows = await page.locator('#view .p-row').count();
   const h = await page.locator('#view h1').first().innerText().catch(() => '');
   if (!h || rows < s.totalPrograms) subjectFailures.push(`${s.code}: rows=${rows} expected=${s.totalPrograms}`);
 }
 check('four subject pages list every practical', subjectFailures.length === 0, subjectFailures.join(' | '));
 
 await go('#/practicals');
-const allRows = await page.locator('.practical-row, .pl-row, [data-practical]').count();
+const allRows = await page.locator('#view .p-row').count();
 check('all-practicals page shows 39 rows', allRows === 39, allRows + ' rows');
 
 /* ------------------------------------------------------- 4. global search -- */
@@ -102,15 +102,15 @@ check('Escape closes the search overlay', overlayHidden);
 /* ---------------------------------------------- 5. completion + bookmark -- */
 const first = data.programs[0];
 await go('#/practical/' + first.id);
-await page.click('[data-action="mark-complete"], [data-action="toggle-complete"], button:has-text("Mark as completed")').catch(() => {});
+await page.click('[data-action="toggle-complete"]');
 await page.waitForTimeout(200);
-await page.click('[data-action="toggle-bookmark"]').catch(() => {});
+await page.click('[data-action="toggle-bookmark"]');
 await page.waitForTimeout(200);
 
 /* notes */
-const noteField = page.locator('textarea[data-note-input], #note-input, textarea').first();
+const noteField = page.locator('[data-note-input]').first();
 await noteField.fill('Verified note: pointer arithmetic refreshes on reload.');
-await page.locator('[data-action="save-note"], button:has-text("Save note")').first().click().catch(() => {});
+await page.locator('[data-action="save-note"]').first().click();
 await page.waitForTimeout(250);
 
 await page.reload({ waitUntil: 'load' });
@@ -127,16 +127,16 @@ const stateAfterReload = await page.evaluate(() => {
 check('completion survives a reload', stateAfterReload.completed >= 1, JSON.stringify(stateAfterReload));
 check('bookmark survives a reload', stateAfterReload.bookmarks >= 1);
 check('personal note survives a reload', stateAfterReload.notes >= 1);
-const noteText = await page.locator('textarea[data-note-input], #note-input, textarea').first().inputValue().catch(() => '');
+const noteText = await page.locator('[data-note-input]').first().inputValue().catch(() => '');
 check('note content is restored', noteText.includes('pointer arithmetic'), noteText.slice(0, 40));
 
 await go('#/bookmarks');
-const bookmarkRows = await page.locator('.practical-row, .pl-row, [data-practical]').count();
+const bookmarkRows = await page.locator('#view .p-row').count();
 check('bookmarks page lists the bookmarked practical', bookmarkRows >= 1, bookmarkRows + ' rows');
 
 /* --------------------------------------------------------------- 6. theme -- */
 const themeBefore = await page.evaluate(() => document.documentElement.dataset.theme);
-await page.click('[data-action="cycle-theme"], [data-action="toggle-theme"], #theme-btn').catch(() => {});
+await page.click('[data-action="cycle-theme"]');
 await page.waitForTimeout(200);
 const themeAfter = await page.evaluate(() => document.documentElement.dataset.theme);
 check('theme toggle changes the theme', themeBefore !== themeAfter, themeBefore + ' -> ' + themeAfter);
@@ -208,16 +208,16 @@ check('no horizontal overflow at 360–1920px', overflow.length === 0, overflow.
 /* mobile drawer */
 await page.setViewportSize({ width: 390, height: 844 });
 await go('#/dashboard');
-const drawerButton = page.locator('[data-action="toggle-nav"], #nav-toggle, button[aria-label*="menu" i]').first();
+const drawerButton = page.locator('[data-action="sidebar-toggle"]').first();
 const hasDrawerButton = await drawerButton.count();
 if (hasDrawerButton) {
   await drawerButton.click();
   await page.waitForTimeout(250);
-  const drawerOpen = await page.evaluate(() => !!document.querySelector('.sidebar.open, body.nav-open, .nav-open'));
+  const drawerOpen = await page.evaluate(() => document.body.classList.contains('nav-open'));
   check('mobile navigation drawer opens', drawerOpen);
   await page.keyboard.press('Escape');
   await page.waitForTimeout(200);
-  const drawerClosed = await page.evaluate(() => !document.querySelector('.sidebar.open, body.nav-open, .nav-open'));
+  const drawerClosed = await page.evaluate(() => !document.body.classList.contains('nav-open'));
   check('Escape closes the mobile drawer', drawerClosed);
 } else {
   check('mobile navigation drawer opens', false, 'no drawer button found');
