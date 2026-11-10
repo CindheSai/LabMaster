@@ -250,8 +250,8 @@
   flex: none;
 }
 .p-row.done .p-num { background: var(--success-soft); color: var(--success); }
-.p-main { min-width: 0; flex: 1; }
-.p-title { font-size: 13.8px; font-weight: 620; letter-spacing: -.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.p-main { min-width: 0; flex: 1; overflow: hidden; }
+.p-title { display: block; max-width: 100%; font-size: 13.8px; font-weight: 620; letter-spacing: -.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .p-meta { display: flex; align-items: center; gap: 8px; margin-top: 3px; font-size: 11.5px; color: var(--muted); flex-wrap: wrap; }
 .p-actions { display: flex; align-items: center; gap: 4px; flex: none; }
 .p-status { font-size: 11px; font-weight: 650; display: inline-flex; align-items: center; gap: 4px; }
@@ -582,8 +582,8 @@ mark { background: color-mix(in srgb, var(--warning) 40%, transparent); color: i
 .tl-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
 .tl-item:last-child { border-bottom: 0; }
 .tl-ico { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: var(--surface-3); color: var(--muted); flex: none; }
-.tl-main { min-width: 0; flex: 1; }
-.tl-title { font-size: 12.8px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tl-main { min-width: 0; flex: 1; overflow: hidden; }
+.tl-title { display: block; max-width: 100%; font-size: 12.8px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tl-sub { font-size: 11.5px; color: var(--muted); }
 .tl-time { font-size: 11px; color: var(--faint); white-space: nowrap; }
 

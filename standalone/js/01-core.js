@@ -144,7 +144,9 @@
     };
   }
 
-  var state = emptyState();
+  /* Hydrate from the saved payload: loadState() sanitizes untrusted JSON and
+     falls back to an empty state when storage is missing or corrupted. */
+  var state = loadState();
 
   function isPlainObject(v) {
     return v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -345,7 +347,8 @@
   }
 
   function cycleTheme() {
-    state.theme = state.theme === 'system' ? 'light' : (state.theme === 'light' ? 'dark' : 'system');
+    /* system -> dark -> light -> system, so every press visibly changes the UI */
+    state.theme = state.theme === 'system' ? 'dark' : (state.theme === 'dark' ? 'light' : 'system');
     saveState();
     applyTheme();
     if (typeof renderApp === 'function') renderApp({ keepScroll: true });
