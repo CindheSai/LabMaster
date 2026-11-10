@@ -104,7 +104,21 @@ for (const vp of VIEWPORTS) {
           overflowers.push({ cls: el.className, left: Math.round(r.left), right: Math.round(r.right) });
         }
         if (el.scrollWidth - el.clientWidth > 2 && getComputedStyle(el).overflowX === 'visible') {
-          overflowers.push({ cls: el.className, scroll: el.scrollWidth, client: el.clientWidth, kind: 'content' });
+          overflowers.push({
+            cls: el.className,
+            scroll: el.scrollWidth,
+            client: el.clientWidth,
+            kind: 'content',
+            text: (el.textContent || '').replace(/\s+/g, ' ').slice(0, 70),
+            widest: (() => {
+              let worst = null, worstW = 0;
+              for (const c of el.querySelectorAll('*')) {
+                const w = c.getBoundingClientRect().width;
+                if (w > worstW) { worstW = w; worst = c; }
+              }
+              return worst ? (worst.className || worst.tagName) + ' @' + Math.round(worstW) : '';
+            })()
+          });
         }
       }
 
@@ -137,10 +151,14 @@ for (const vp of VIEWPORTS) {
       }
 
       return {
+        route,
         docOverflow,
         contentLeft: Math.round(vr.left + parseFloat(cs.paddingLeft)),
         contentRight: Math.round(vr.right - parseFloat(cs.paddingRight)),
+        contentW: Math.round(vr.width),
+        contentMax: cs.maxWidth,
         contentPad: cs.paddingLeft + '/' + cs.paddingRight,
+        mainW: Math.round((document.querySelector('.main') || { getBoundingClientRect: () => ({ width: 0 }) }).getBoundingClientRect().width),
         sidebarW: Math.round(sb.width),
         topbarH: Math.round(tb.height),
         kids: kids.slice(0, 8),
@@ -185,8 +203,14 @@ for (const vp of VIEWPORTS) {
   // content column alignment across routes (same left/right edges)
   const lefts = [...new Set(sameVp.map(([, v]) => v.contentLeft))];
   const rights = [...new Set(sameVp.map(([, v]) => v.contentRight))];
-  if (Math.max(...lefts) - Math.min(...lefts) > 1) push('*', vp.name, 'content column drift', `left edges: ${lefts.join(', ')}`);
-  if (Math.max(...rights) - Math.min(...rights) > 1) push('*', vp.name, 'content column drift', `right edges: ${rights.join(', ')}`);
+  if (Math.max(...lefts) - Math.min(...lefts) > 1) {
+    const map = sameVp.map(([, v]) => `${v.route}=${v.contentLeft}(w${v.contentW},main${v.mainW},max${v.contentMax})`).join(' ');
+    push('*', vp.name, 'content column drift', `left edges ${lefts.join('/')} :: ${map}`);
+  }
+  if (Math.max(...rights) - Math.min(...rights) > 1) {
+    const map = sameVp.map(([, v]) => `${v.route}=${v.contentRight}`).join(' ');
+    push('*', vp.name, 'content column drift', `right edges ${rights.join('/')} :: ${map}`);
+  }
 }
 
 /* search modal centring on desktop + mobile */
@@ -197,18 +221,28 @@ for (const vp of [{ w: 1366, h: 768, name: '1366 laptop' }, { w: 390, h: 844, na
   await page.click('[data-action="open-search"]').catch(() => {});
   await page.waitForTimeout(250);
   const modal = await page.evaluate(() => {
-    const el = document.querySelector('#search-modal .modal') || document.querySelector('#search-modal');
-    if (!el) return null;
-    const r = el.getBoundingClientRect();
-    return { left: Math.round(r.left), right: Math.round(r.right), top: Math.round(r.top), w: Math.round(r.width), vw: window.innerWidth };
+    const panel = document.querySelector('#search-modal .modal');
+    const overlay = document.getElementById('search-modal');
+    if (!panel || !overlay) return null;
+    const r = panel.getBoundingClientRect();
+    const o = overlay.getBoundingClientRect();
+    return {
+      left: Math.round(r.left), right: Math.round(r.right), top: Math.round(r.top), w: Math.round(r.width),
+      ovLeft: Math.round(o.left), ovRight: Math.round(o.right), ovW: Math.round(o.width), vw: window.innerWidth,
+      visible: getComputedStyle(overlay).opacity !== '0'
+    };
   });
   if (!modal) {
-    push('#/dashboard', vp.name, 'search modal', 'modal element not found');
+    push('#/dashboard', vp.name, 'search modal', 'modal panel not found');
   } else {
-    const leftGap = modal.left;
-    const rightGap = modal.vw - modal.right;
-    if (Math.abs(leftGap - rightGap) > 2) push('#/dashboard', vp.name, 'modal off-centre', `left ${leftGap}px vs right ${rightGap}px`);
+    // the overlay is the positioning context, so the dialog must be centred inside it
+    const leftGap = modal.left - modal.ovLeft;
+    const rightGap = modal.ovRight - modal.right;
+    if (Math.abs(leftGap - rightGap) > 2) {
+      push('#/dashboard', vp.name, 'modal off-centre', `left ${leftGap}px vs right ${rightGap}px (overlay ${modal.ovW}px)`);
+    }
     if (modal.left < -1 || modal.right > modal.vw + 1) push('#/dashboard', vp.name, 'modal clipped', JSON.stringify(modal));
+    if (!modal.visible) push('#/dashboard', vp.name, 'modal backdrop', 'overlay stayed transparent after open');
   }
   await page.keyboard.press('Escape').catch(() => {});
 }
