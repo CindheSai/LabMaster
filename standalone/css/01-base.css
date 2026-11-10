@@ -373,3 +373,28 @@ img { max-width: 100%; }
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   Layout alignment locks
+   --------------------------------------------------------------------------
+   Guarantee that every route renders the same shell geometry: the sidebar is
+   pinned to one width and the scrollbar gutter is reserved, so pages of
+   different heights cannot shift the centred content column.
+   ========================================================================== */
+html { scrollbar-gutter: stable; }
+
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  max-width: var(--sidebar-w);
+  flex: 0 0 var(--sidebar-w);
+}
+
+@media (min-width: 1024px) {
+  .app-shell.collapsed .sidebar {
+    width: var(--sidebar-w-collapsed);
+    min-width: var(--sidebar-w-collapsed);
+    max-width: var(--sidebar-w-collapsed);
+    flex-basis: var(--sidebar-w-collapsed);
+  }
+}

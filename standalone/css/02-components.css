@@ -481,6 +481,9 @@
   transition: opacity .16s var(--ease);
 }
 .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+/* click-away layer sits under the panel, above the dim background */
+.modal-backdrop-hit { position: absolute; inset: 0; }
+.modal-backdrop > .modal { position: relative; z-index: 1; }
 .modal {
   width: 100%; max-width: 660px;
   max-height: min(76vh, 720px);
