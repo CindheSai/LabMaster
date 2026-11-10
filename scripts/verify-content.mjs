@@ -147,7 +147,17 @@ const codeOf = (p) => (p ? asText(p.correctedCode) || asText(p.originalCode) : '
   const code = codeOf(p);
   if (!p) fail('M15 P9 (id 309) missing');
   else {
-    if (/\beval\s*\(/.test(code)) fail('M15 P9: still uses eval()');
+    // ignore comments and string literals so prose like "without eval()" cannot
+    // mask or fake the result - only a real call in executable code counts
+    const executable = code
+      .split('\n')
+      .filter((line) => !line.trim().startsWith('#'))
+      .join('\n')
+      .replace(/"""[\s\S]*?"""/g, '')
+      .replace(/'''[\s\S]*?'''/g, '')
+      .replace(/'[^'\n]*'/g, "''")
+      .replace(/"[^"\n]*"/g, '""');
+    if (/(?<![\w.])eval\s*\(/.test(executable)) fail('M15 P9: still uses eval()');
     if (!/(ast\.parse|tokenize|shunting|def\s+\w*parse|operator\.)/.test(code)) fail('M15 P9: no safe arithmetic parser');
     if (problems.length === 0) ok('M15 P9 evaluates arithmetic without eval()');
   }
