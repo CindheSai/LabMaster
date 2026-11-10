@@ -5,6 +5,38 @@
 
 ---
 
+## 🚀 Quick start — no installation
+
+1. Download and extract `labmaster-standalone.zip`.
+2. Open the extracted `LabMaster` folder.
+3. Double-click **`index.html`**.
+
+The complete platform opens in Chrome, Edge, Firefox or Safari. No Node.js, npm,
+Python, PHP, database, terminal, localhost server or API key is required — the
+whole application is one self-contained HTML file and works offline. The four lab
+PDFs sit beside it in `resources/` and open from the Resource Centre.
+
+Windows: if double-clicking opens your editor, right-click `index.html` →
+**Open with** → your browser. To keep it handy, right-click → **Send to** →
+**Desktop (create shortcut)**.
+
+---
+
+## ✅ Verification for this build
+
+| Check | Result |
+| --- | --- |
+| `npm run lint` (TypeScript) and `npm run build` | Clean |
+| `node scripts/audit-alignment.mjs` — 14 routes × 8 viewports | 112 checks, 0 alignment defects |
+| `node scripts/verify-content.mjs` — content integrity | 4 subjects, 39 original IDs, 168 viva questions, 4 PDFs, 5 defect fixes |
+| `node scripts/verify-features.mjs` — real `file://` build in Chromium | 35 assertions pass, no console errors |
+| Dependency security scan | 291 packages, 0 high/critical advisories |
+
+See [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md) for the full phase log,
+the defects fixed in this pass and the known limitations.
+
+---
+
 ## 📌 Project Overview
 
 **LabMaster** bridges the gap between static laboratory manuals and real-world understanding. Instead of memorizing code without comprehension, students can explore all **39 laboratory programs across 4 Major semester courses**, examine every single line of code with a structured 5-part explanation model, test live interactive simulations, and master examiner Viva Voce questions.
