@@ -398,3 +398,12 @@ html { scrollbar-gutter: stable; }
     flex-basis: var(--sidebar-w-collapsed);
   }
 }
+
+/* The routed view is taller than the window on most pages, so the document
+   scroller gains a classic scrollbar; reserving its gutter on both html and
+   body keeps short pages (dashboard) on the exact same content column. */
+body { scrollbar-gutter: stable; }
+
+/* Narrow cards: stop flex gaps and long tokens pushing past the card edge. */
+.card { min-width: 0; overflow-wrap: anywhere; }
+.card > *, .card-head > * { min-width: 0; }
