@@ -15,7 +15,8 @@
  *
  * Usage: node scripts/audit-alignment.mjs [path-to-index.html]
  */
-import { chromium } from '/opt/appjet/browser/node_modules/playwright/index.js';
+import playwright from '/opt/appjet/browser/node_modules/playwright/index.js';
+const { chromium } = playwright;
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
