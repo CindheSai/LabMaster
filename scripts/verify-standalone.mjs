@@ -208,7 +208,7 @@ check('no horizontal overflow at 360–1920px', overflow.length === 0, overflow.
 /* mobile drawer */
 await page.setViewportSize({ width: 390, height: 844 });
 await go('#/dashboard');
-const drawerButton = page.locator('[data-action="sidebar-toggle"]').first();
+const drawerButton = page.locator('button[data-action="sidebar-toggle"]').first();
 const hasDrawerButton = await drawerButton.count();
 if (hasDrawerButton) {
   await drawerButton.click();
