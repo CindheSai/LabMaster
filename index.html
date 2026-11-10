@@ -385,6 +385,31 @@ img { max-width: 100%; }
   }
 }
 
+/* ==========================================================================
+   Layout alignment locks
+   --------------------------------------------------------------------------
+   Guarantee that every route renders the same shell geometry: the sidebar is
+   pinned to one width and the scrollbar gutter is reserved, so pages of
+   different heights cannot shift the centred content column.
+   ========================================================================== */
+html { scrollbar-gutter: stable; }
+
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  max-width: var(--sidebar-w);
+  flex: 0 0 var(--sidebar-w);
+}
+
+@media (min-width: 1024px) {
+  .app-shell.collapsed .sidebar {
+    width: var(--sidebar-w-collapsed);
+    min-width: var(--sidebar-w-collapsed);
+    max-width: var(--sidebar-w-collapsed);
+    flex-basis: var(--sidebar-w-collapsed);
+  }
+}
+
 /* ==== 02-components.css ==== */
 /* ==========================================================================
    LabMaster — components: cards, buttons, code viewer, dialogs, responsive
@@ -869,6 +894,9 @@ img { max-width: 100%; }
   transition: opacity .16s var(--ease);
 }
 .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+/* click-away layer sits under the panel, above the dim background */
+.modal-backdrop-hit { position: absolute; inset: 0; }
+.modal-backdrop > .modal { position: relative; z-index: 1; }
 .modal {
   width: 100%; max-width: 660px;
   max-height: min(76vh, 720px);
@@ -1264,8 +1292,9 @@ body.nav-open .backdrop { opacity: 1; visibility: visible; }
   </div>
 </div>
 
-<div class="modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" aria-hidden="true">
-  <div class="modal-backdrop" data-action="close-search"></div>
+<div class="modal-backdrop" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" aria-hidden="true">
+  <div class="modal-backdrop-hit" data-action="close-search"></div>
+  <div class="modal">
   <div class="modal-search-head">
     <h2 id="search-title" class="sr-only">Search LabMaster</h2>
     <div class="input-group" style="flex:1">
@@ -1281,6 +1310,7 @@ body.nav-open .backdrop { opacity: 1; visibility: visible; }
     <span class="tiny muted"><span class="kbd">↑</span> <span class="kbd">↓</span> to move</span>
     <span class="tiny muted"><span class="kbd">Enter</span> to open</span>
     <span class="tiny muted"><span class="kbd">Esc</span> to close</span>
+  </div>
   </div>
 </div>
 
