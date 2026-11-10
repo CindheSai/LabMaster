@@ -151,7 +151,6 @@ for (const vp of VIEWPORTS) {
       }
 
       return {
-        route,
         docOverflow,
         contentLeft: Math.round(vr.left + parseFloat(cs.paddingLeft)),
         contentRight: Math.round(vr.right - parseFloat(cs.paddingRight)),
@@ -168,6 +167,7 @@ for (const vp of VIEWPORTS) {
       };
     });
 
+    m.route = route;
     metrics.set(`${vp.name}|${route}`, m);
 
     if (m.docOverflow > TOL) {
