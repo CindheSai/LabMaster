@@ -76,7 +76,7 @@ for (const vp of VIEWPORTS) {
       const v = document.getElementById('view');
       return v && v.children.length > 0;
     }, null, { timeout: 15000 }).catch(() => {});
-    await page.waitForTimeout(120);
+    await page.waitForTimeout(350);
 
     const m = await page.evaluate(() => {
       const view = document.getElementById('view');

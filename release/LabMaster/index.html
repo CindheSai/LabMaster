@@ -415,9 +415,10 @@ html { scrollbar-gutter: stable; }
    body keeps short pages (dashboard) on the exact same content column. */
 body { scrollbar-gutter: stable; }
 
-/* Narrow cards: stop flex gaps and long tokens pushing past the card edge. */
-.card { min-width: 0; overflow-wrap: anywhere; }
-.card > *, .card-head > * { min-width: 0; }
+/* Narrow cards: flex children may shrink, and their text must break rather
+   than push past the card edge (min-width:0 alone lets text overflow). */
+.card { min-width: 0; }
+.card > *, .card-head > * { min-width: 0; overflow-wrap: anywhere; }
 
 /* ==== 02-components.css ==== */
 /* ==========================================================================
