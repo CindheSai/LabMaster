@@ -84,10 +84,11 @@ ok(`${vivaCount} viva questions and ${stepCount} algorithm steps preserved`);
 /* ------------------------------------------------------------------- PDFs */
 const PDF_ROOTS = ['standalone', 'dist/LabMaster', 'release/LabMaster'];
 for (const s of subjects) {
-  if (!s.pdf) { fail(`${s.id} has no PDF association`); continue; }
-  const found = PDF_ROOTS.some((root) => existsSync(join(ROOT, root, s.pdf)));
-  if (!found) fail(`PDF ${s.pdf} for ${s.id} not found on disk`);
-  else ok(`${s.id} PDF resolves: ${s.pdf}`);
+  const pdfFile = typeof s.pdf === 'string' ? s.pdf : s.pdf && s.pdf.file;
+  if (!pdfFile) { fail(`${s.id} has no PDF association`); continue; }
+  const found = PDF_ROOTS.some((root) => existsSync(join(ROOT, root, pdfFile)));
+  if (!found) fail(`PDF ${pdfFile} for ${s.id} not found on disk`);
+  else ok(`${s.id} PDF resolves: ${pdfFile}`);
 }
 
 /* ------------------------------------------------- five known defect fixes */
