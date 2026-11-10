@@ -3,8 +3,11 @@ node_modules/
 .pnp
 .pnp.js
 
-# Production build outputs
-dist/
+# Production build outputs (Vite) — the shipped standalone deliverable stays tracked
+dist/*
+!dist/LabMaster/
+!dist/LabMaster/**
+!dist/labmaster-standalone.zip
 dist-ssr/
 build/
 coverage/
