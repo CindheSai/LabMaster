@@ -408,3 +408,13 @@ body { scrollbar-gutter: stable; }
    than push past the card edge (min-width:0 alone lets text overflow). */
 .card { min-width: 0; }
 .card > *, .card-head > * { min-width: 0; overflow-wrap: anywhere; }
+
+/* The trailing chip in a card header must keep its intrinsic width; the title
+   beside it is the element that wraps. Without this the chip is compressed by
+   the min-width:0 rule above and its label overflows the card edge. */
+.card-head .ch-actions {
+  flex: 0 0 auto;
+  min-width: max-content;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
